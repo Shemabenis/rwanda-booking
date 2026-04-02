@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Customer Service - RwandaBooking</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <div id="app-header"></div>
+
+    <div class="container section">
+        <h1 class="section-title">How can we help?</h1>
+
+        <div class="results-container" style="grid-template-columns: 1fr 1fr; gap: 48px;">
+
+            <!-- Contact Form -->
+            <div>
+                <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 24px;">Send us a message</h2>
+                <form onsubmit="event.preventDefault(); alert('Message sent!');">
+                    <div class="form-group">
+                        <label class="form-label">Topic</label>
+                        <select class="form-input" style="height: 42px;">
+                            <option>Booking Inquiry</option>
+                            <option>Property Listing</option>
+                            <option>Technical Issue</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Your Email</label>
+                        <input type="email" class="form-input" placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-input" rows="6" placeholder="Describe your issue..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+
+            <!-- FAQs -->
+            <div>
+                <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 24px;">Frequently Asked Questions</h2>
+
+                <div style="margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">How do I cancel a booking?</h3>
+                    <p style="color: var(--text-secondary);">You can cancel your booking by logging into your account,
+                        viewing your trips, and selecting "Cancel Booking". Cancellation fees may apply depending on the
+                        property policy.</p>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">When do I pay?</h3>
+                    <p style="color: var(--text-secondary);">Payment policies vary by property. Some require prepayment,
+                        while others allow you to pay upon arrival.</p>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Can I change my dates?</h3>
+                    <p style="color: var(--text-secondary);">Yes, date changes are possible subject to availability and
+                        the property's policy.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- Footer -->
+    <div id="app-footer"></div>
+    <script src="js/components.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RwandaBooking - Flights</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .flight-card {
+            background: white;
+            border: 1px solid var(--ui-border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        @media (min-width: 768px) {
+            .flight-card {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .airline-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 200px;
+        }
+
+        .airline-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .route-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            text-align: center;
+            gap: 24px;
+        }
+
+        .time-loc {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .time {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .loc {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .duration-line {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            width: 100px;
+        }
+
+        .duration-line hr {
+            width: 100%;
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 4px 0;
+        }
+
+        .price-section {
+            text-align: right;
+            min-width: 150px;
+        }
+
+        /* ===== Price Summary Modal ===== */
+        #flight-modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55); z-index: 2000;
+            align-items: center; justify-content: center; padding: 16px;
+        }
+        #flight-modal-overlay.open { display: flex; }
+        #flight-modal {
+            background: #fff; border-radius: 12px; width: 100%; max-width: 500px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.22); overflow: hidden;
+            animation: slideUp 0.25s cubic-bezier(0.4,0,0.2,1);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fm-header {
+            background: var(--brand-primary); color: #fff;
+            padding: 20px 24px 16px;
+            display: flex; justify-content: space-between; align-items: flex-start;
+        }
+        .fm-header h2 { font-size: 18px; font-weight: 700; margin: 0; }
+        .fm-header p  { font-size: 13px; opacity: 0.8; margin: 4px 0 0; }
+        .fm-close {
+            background: rgba(255,255,255,0.15); border: none; color: #fff;
+            width: 32px; height: 32px; border-radius: 50%; font-size: 18px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: background 0.15s;
+        }
+        .fm-close:hover { background: rgba(255,255,255,0.3); }
+        .fm-body { padding: 24px; }
+        .fm-route {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; background: #f5f7fa; border-radius: 8px;
+            padding: 16px; margin-bottom: 20px; font-weight: 700; font-size: 18px;
+        }
+        .fm-route span { color: var(--text-secondary); font-size: 13px; font-weight: 400; display: block; }
+        .fm-avail-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #d1fae5; color: #065f46; border-radius: 20px;
+            padding: 6px 14px; font-size: 13px; font-weight: 600; margin-bottom: 16px;
+        }
+        .fm-breakdown { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+        .fm-breakdown-title {
+            background: #f5f7fa; padding: 10px 16px; font-size: 13px;
+            font-weight: 700; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .fm-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px; border-top: 1px solid #f0f0f0; font-size: 14px;
+        }
+        .fm-row.total { background: #f0fdf4; font-weight: 700; font-size: 15px; color: var(--brand-primary); }
+        .fm-row span:last-child { font-weight: 600; }
+        .fm-guests { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .fm-guests label { font-size: 14px; font-weight: 600; flex: 1; }
+        .fm-guests input[type=number] {
+            width: 70px; padding: 8px 10px; border: 1px solid var(--ui-border);
+            border-radius: 6px; font-size: 15px; font-weight: 600; text-align: center;
+        }
+        .fm-book-btn {
+            width: 100%; padding: 14px; background: var(--brand-secondary); color: #fff;
+            border: none; border-radius: 8px; font-size: 17px; font-weight: 700;
+            cursor: pointer; transition: background 0.2s, transform 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .fm-book-btn:hover { background: var(--brand-primary); }
+        .fm-book-btn:active { transform: translateY(1px); }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div id="app-header"></div>
+
+    <div class="container" style="margin-top: 24px;">
+        <!-- Search Header -->
+        <div class="search-box" style="margin-bottom: 32px;">
+            <form class="search-form" onsubmit="handleFlightSearch(event)">
+                <div class="input-group">
+                    <span style="margin-right:8px;">🛫</span>
+                    <input type="text" id="flight-origin" class="input-field" placeholder="From where?"
+                        value="Kigali (KGL)">
+                </div>
+                <div class="input-group">
+                    <span style="margin-right:8px;">🛬</span>
+                    <input type="text" id="flight-dest" class="input-field" placeholder="To where?">
+                </div>
+                <div class="input-group">
+                    <span style="margin-right:8px;">📅</span>
+                    <input type="date" id="flight-date" class="input-field">
+                </div>
+                <div class="search-btn-wrapper">
+                    <button type="submit" class="search-btn">Search Flights</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="results-list">
+            <h1 id="results-count" style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">Loading flights...
+            </h1>
+            <div id="flight-container"></div>
+        </div>
+    </div>
+
+    <!-- Flight Price Summary Modal -->
+    <div id="flight-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="fm-title">
+        <div id="flight-modal">
+            <div class="fm-header">
+                <div>
+                    <h2 id="fm-title">Flight Summary</h2>
+                    <p id="fm-subtitle">Review your flight details below</p>
+                </div>
+                <button class="fm-close" onclick="closeFlightModal()" aria-label="Close">&#x2715;</button>
+            </div>
+            <div class="fm-body">
+                <div class="fm-route">
+                    <div style="text-align:center;">
+                        <div id="fm-origin-code" style="font-size:22px;">KGL</div>
+                        <span id="fm-origin-name">Kigali</span>
+                    </div>
+                    <div style="color:var(--text-secondary); font-size:24px;">✈</div>
+                    <div style="text-align:center;">
+                        <div id="fm-dest-code" style="font-size:22px;">—</div>
+                        <span id="fm-dest-name">Destination</span>
+                    </div>
+                </div>
+
+                <div class="fm-avail-badge"><span>✅</span> Seats available on selected date</div>
+
+                <div class="fm-guests">
+                    <label for="fm-passengers">Number of passengers</label>
+                    <input type="number" id="fm-passengers" min="1" max="9" value="1" onchange="updateFlightTotal()">
+                </div>
+
+                <div class="fm-breakdown">
+                    <div class="fm-breakdown-title">Price Breakdown</div>
+                    <div class="fm-row"><span>✈ Route</span><span id="fm-route-label">—</span></div>
+                    <div class="fm-row"><span>📅 Date</span><span id="fm-date-label">—</span></div>
+                    <div class="fm-row"><span>⏱ Duration</span><span id="fm-duration-label">—</span></div>
+                    <div class="fm-row"><span>🛑 Stops</span><span id="fm-stops-label">—</span></div>
+                    <div class="fm-row"><span>💵 Price per passenger</span><span id="fm-price-per">—</span></div>
+                    <div class="fm-row"><span>👥 Passengers</span><span id="fm-pax-display">1</span></div>
+                    <div class="fm-row total"><span>Total</span><span id="fm-total">—</span></div>
+                </div>
+
+                <button class="fm-book-btn" id="fm-book-btn" onclick="confirmFlightBooking()">✈ Book Flight</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="app-footer"></div>
+
+    <script src="js/flights-data.js?v=2"></script>
+    <script src="js/components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set min date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('flight-date').min = today;
+            document.getElementById('flight-date').value = today;
+
+            // Load initial flights asynchronously
+            if (typeof fetchFlights !== 'undefined') {
+                fetchFlights().then(data => {
+                    if (typeof _loadedFlightsCache !== 'undefined') _loadedFlightsCache = data;
+                    renderFlights(data);
+                    
+                    // Handle URL params if any
+                    const params = new URLSearchParams(window.location.search);
+                    const dest = params.get('dest');
+                    if (dest) {
+                        document.getElementById('flight-dest').value = dest;
+                        filterFlights(dest);
+                    }
+                });
+            } else if (typeof flights !== 'undefined') {
+                renderFlights(flights);
+                // Handle URL params if any
+                const params = new URLSearchParams(window.location.search);
+                const dest = params.get('dest');
+                if (dest) {
+                    document.getElementById('flight-dest').value = dest;
+                    filterFlights(dest);
+                }
+            }
+
+                // We do it handled inside async block now
+        });
+
+        function handleFlightSearch(e) {
+            e.preventDefault();
+            const dest = document.getElementById('flight-dest').value;
+            filterFlights(dest);
+        }
+
+        function filterFlights(destination) {
+            let dataToFilter = typeof _loadedFlightsCache !== 'undefined' && _loadedFlightsCache.length > 0 ? _loadedFlightsCache : (typeof flights !== 'undefined' ? flights : []);
+
+            if (!destination) {
+                renderFlights(dataToFilter);
+                return;
+            }
+            const lowerDest = destination.toLowerCase();
+            const filtered = dataToFilter.filter(f => f.destination.toLowerCase().includes(lowerDest));
+            renderFlights(filtered, destination);
+        }
+
+        let _flightModalData = null;
+
+        window.triggerFlightBooking = function(id, airline, origin, dest, depTime, arrTime, duration, stops, price) {
+            const flightDate = document.getElementById('flight-date').value;
+
+            _flightModalData = { id, airline, origin, dest, depTime, arrTime, duration, stops, price, date: flightDate };
+
+            const dateObj = new Date(flightDate + 'T00:00:00');
+            const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+
+            // Origin / dest codes (first word)
+            document.getElementById('fm-origin-code').textContent = origin.split(' ')[0];
+            document.getElementById('fm-origin-name').textContent = origin.split(' ').slice(1).join(' ') || origin;
+            document.getElementById('fm-dest-code').textContent = dest.split(' ')[0];
+            document.getElementById('fm-dest-name').textContent = dest.split(' ').slice(1).join(' ') || dest;
+
+            document.getElementById('fm-title').textContent = airline;
+            document.getElementById('fm-subtitle').textContent = `${origin.split(' ')[0]} → ${dest.split(' ')[0]}`;
+            document.getElementById('fm-route-label').textContent = `${origin.split(' ')[0]} → ${dest.split(' ')[0]}`;
+            document.getElementById('fm-date-label').textContent = formattedDate;
+            document.getElementById('fm-duration-label').textContent = duration;
+            document.getElementById('fm-stops-label').textContent = stops;
+            document.getElementById('fm-passengers').value = 1;
+            updateFlightTotal();
+
+            document.getElementById('flight-modal-overlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        };
+
+        function updateFlightTotal() {
+            if (!_flightModalData) return;
+            const pax = parseInt(document.getElementById('fm-passengers').value) || 1;
+            const total = _flightModalData.price * pax;
+            document.getElementById('fm-price-per').textContent = formatFlightPrice(_flightModalData.price);
+            document.getElementById('fm-pax-display').textContent = pax;
+            document.getElementById('fm-total').textContent = formatFlightPrice(total);
+        }
+
+        window.closeFlightModal = function() {
+            document.getElementById('flight-modal-overlay').classList.remove('open');
+            document.body.style.overflow = '';
+            _flightModalData = null;
+        };
+
+        document.getElementById('flight-modal-overlay').addEventListener('click', function(e) {
+            if (e.target === this) closeFlightModal();
+        });
+
+        window.confirmFlightBooking = async function() {
+            if (!_flightModalData) return;
+            const pax = parseInt(document.getElementById('fm-passengers').value) || 1;
+            const total = _flightModalData.price * pax;
+            const btn = document.getElementById('fm-book-btn');
+            btn.disabled = true; btn.textContent = 'Processing...';
+
+            if (window.submitBooking) {
+                await window.submitBooking({
+                    type: 'flight',
+                    itemId: _flightModalData.id,
+                    itemName: `${_flightModalData.airline} ${_flightModalData.origin.split(' ')[0]} → ${_flightModalData.dest.split(' ')[0]}`,
+                    price: total,
+                    checkIn: _flightModalData.date,
+                    checkOut: _flightModalData.date,
+                    guests: pax
+                });
+            } else {
+                alert('Booking system is not loaded yet. Please try again.');
+            }
+            btn.disabled = false; btn.innerHTML = '✈ Book Flight';
+            closeFlightModal();
+        };
+
+        function renderFlights(data, searchTerm = '') {
+            const container = document.getElementById('flight-container');
+            const countLabel = document.getElementById('results-count');
+
+            if (data.length === 0) {
+                countLabel.textContent = `No flights found to "${searchTerm}"`;
+                container.innerHTML = '<div style="padding: 20px; text-align: center;"><h3>No flights found. Try typical routes like Dubai, London, or Johannesburg.</h3></div>';
+                return;
+            }
+
+            countLabel.textContent = searchTerm ? `${data.length} flights found to ${searchTerm}` : `Available Flights`;
+            container.innerHTML = '';
+
+            data.forEach(f => {
+                const html = `
+                <div class="flight-card">
+                    <div class="airline-section">
+                        <img src="${f.logo}" alt="${f.airline}" class="airline-logo">
+                        <span style="font-weight:600;">${f.airline}</span>
+                    </div>
+                    <div class="route-section">
+                        <div class="time-loc">
+                            <span class="time">${f.departureTime}</span>
+                            <span class="loc">${f.origin.split(' ')[0]}</span>
+                        </div>
+                        <div class="duration-line">
+                            <span>${f.duration}</span>
+                            <hr>
+                            <span>${f.stops}</span>
+                        </div>
+                        <div class="time-loc">
+                            <span class="time">${f.arrivalTime}</span>
+                            <span class="loc">${f.destination.split(' ')[0]}</span>
+                        </div>
+                    </div>
+                    <div class="price-section">
+                        <div class="price-text" style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">${formatFlightPrice(f.price)}</div>
+                        <button class="btn btn-primary" onclick="window.triggerFlightBooking('${f.id}', '${f.airline}', '${f.origin}', '${f.destination}', '${f.departureTime}', '${f.arrivalTime}', '${f.duration}', '${f.stops}', ${f.price})">Select</button>
+                    </div>
+                </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        }
+    </script>
+</body>
+
+</html>

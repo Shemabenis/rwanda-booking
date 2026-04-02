@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007042;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004d2e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bgGrad)" rx="10"/>
+  
+  <!-- Motion lines -->
+  <g stroke="#febb02" stroke-width="3" opacity="0.6">
+    <line x1="20" y1="70" x2="60" y2="70" stroke-linecap="round"/>
+    <line x1="30" y1="85" x2="80" y2="85" stroke-linecap="round"/>
+    <line x1="25" y1="100" x2="70" y2="100" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Modern car silhouette -->
+  <g fill="#febb02">
+    <path d="M85 85 L95 70 L145 70 L155 85 Z"/>
+    <path d="M80 85 L80 105 Q80 110 85 110 L95 110 L95 120 Q95 125 100 125 L110 125 Q115 125 115 120 L115 110 L125 110 L125 120 Q125 125 130 125 L140 125 Q145 125 145 120 L145 110 L155 110 Q160 110 160 105 L160 85 Z"/>
+    <circle cx="105" cy="125" r="7" fill="#1a1a1a"/>
+    <circle cx="135" cy="125" r="7" fill="#1a1a1a"/>
+    <rect x="100" y="75" width="12" height="10" fill="#ffffff" opacity="0.9"/>
+    <rect x="115" y="75" width="12" height="10" fill="#ffffff" opacity="0.9"/>
+    <rect x="130" y="75" width="12" height="10" fill="#ffffff" opacity="0.9"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#febb02">DRIVE</text>
+  <text x="100" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#ffffff">RWANDA</text>
+</svg>

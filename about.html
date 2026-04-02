@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About RwandaBooking - Connecting Travelers with Rwandan Hospitality</title>
+    <meta name="description"
+        content="Learn about RwandaBooking — born in Rwanda, built for Rwandans, sharing our beauty with global travelers.">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* About Page Specific Styles */
+        .about-hero {
+            background: linear-gradient(rgba(0, 77, 46, 0.88), rgba(0, 77, 46, 0.88)),
+                url('https://images.unsplash.com/photo-1593693399741-6f30d8a6d12f?auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0 72px;
+            text-align: center;
+        }
+
+        .about-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .about-hero p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Two-column layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .about-hero h1 {
+                font-size: 28px;
+            }
+
+            .about-hero p {
+                font-size: 16px;
+            }
+        }
+
+        .two-col img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: block;
+        }
+
+        /* Mission cards */
+        .mission-card {
+            border-left: 4px solid var(--brand-primary);
+            padding-left: 20px;
+            margin-bottom: 28px;
+        }
+
+        .mission-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--brand-primary);
+        }
+
+        .mission-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Values grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .value-card {
+            background: white;
+            border: 1px solid var(--ui-border);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .value-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .value-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .value-card h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .value-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            bottom: 6px;
+            width: 3px;
+            background: var(--brand-primary);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -39px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--brand-primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--brand-primary);
+        }
+
+        .timeline-item h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--brand-primary);
+            margin-bottom: 6px;
+        }
+
+        .timeline-item p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Team grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .team-card {
+            text-align: center;
+            padding: 24px 16px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--ui-border);
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .team-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 16px;
+            display: block;
+            border: 3px solid var(--brand-light-bg);
+        }
+
+        .team-card h5 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .team-card .role {
+            font-size: 13px;
+            color: var(--brand-secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .team-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Stats banner */
+        .stats-banner {
+            background-color: var(--brand-primary);
+            color: white;
+            padding: 56px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 32px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--brand-accent);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 64px 0;
+        }
+
+        .cta-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline-primary {
+            background: transparent;
+            border: 2px solid var(--brand-primary);
+            color: var(--brand-primary);
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--brand-light-bg);
+        }
+
+        .bg-light {
+            background-color: var(--brand-light-bg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Shared Header -->
+    <div id="app-header"></div>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>Our Story: Connecting Rwanda with the World</h1>
+            <p>Born in Rwanda, built for Rwandans, sharing our beauty with global travelers</p>
+        </div>
+    </section>
+
+    <!-- Our Mission & Vision -->
+    <section style="padding: 64px 0;">
+        <div class="container">
+            <div class="two-col">
+                <div>
+                    <h2 class="section-title">Our Mission &amp; Vision</h2>
+                    <div class="mission-card">
+                        <h4>Our Mission</h4>
+                        <p>To empower Rwandan property owners by connecting them with domestic and international
+                            travelers, while preserving and promoting authentic Rwandan hospitality.</p>
+                    </div>
+                    <div class="mission-card">
+                        <h4>Our Vision</h4>
+                        <p>To become Rwanda's most trusted platform for authentic travel experiences, contributing to
+                            sustainable tourism and economic growth across all provinces.</p>
+                    </div>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1564501049418-3c27787d01e8?auto=format&fit=crop&w=1000&q=80"
+                        alt="Rwandan hospitality">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Core Values -->
+    <section class="bg-light" style="padding: 64px 0;">
+        <div class="container">
+            <h2 class="section-title" style="text-align:center; margin-bottom: 8px;">Our Core Values</h2>
+            <p style="text-align:center; color:var(--text-secondary); margin-bottom: 40px;">What drives everything we do
+            </p>
+            <div class="values-grid">
+                <div class="value-card">
+                    <span class="value-icon">🤝</span>
+                    <h4>Authenticity</h4>
+                    <p>We celebrate genuine Rwandan experiences and hospitality. Every property is verified to ensure
+                        quality and authenticity.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🌍</span>
+                    <h4>Community</h4>
+                    <p>We believe in uplifting local communities. A portion of every booking goes towards community
+                        tourism projects.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🌿</span>
+                    <h4>Sustainability</h4>
+                    <p>We promote eco-friendly tourism practices and partner with properties that prioritize
+                        environmental responsibility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Journey -->
+    <section style="padding: 64px 0;">
+        <div class="container">
+            <h2 class="section-title" style="text-align:center; margin-bottom: 48px;">Our Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>2021: The Beginning</h4>
+                    <p>Founded in Kigali by a team of Rwandan entrepreneurs who saw the need for a local booking
+                        platform that truly understands Rwandan tourism.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2022: First 100 Properties</h4>
+                    <p>Onboarded our first 100 properties across Rwanda, focusing on Kigali and Musanze regions.
+                        Launched our mobile money payment system.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2023: Expansion</h4>
+                    <p>Expanded to cover all 5 provinces of Rwanda. Partnered with Rwanda Development Board to promote
+                        domestic tourism.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2024: Looking Ahead</h4>
+                    <p>Launching our mobile app, introducing experience bookings (gorilla trekking, cultural tours), and
+                        expanding to East African Community markets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet Our Team -->
+    <section class="bg-light" style="padding: 64px 0;">
+        <div class="container">
+            <h2 class="section-title" style="text-align:center; margin-bottom: 40px;">Meet Our Team</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="CEO">
+                    <h5>Jean Paul M.</h5>
+                    <p class="role">CEO &amp; Founder</p>
+                    <p>Former tourism entrepreneur with 10+ years experience in Rwandan hospitality.</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="CTO">
+                    <h5>Marie A.</h5>
+                    <p class="role">Chief Technology Officer</p>
+                    <p>Software engineer passionate about building solutions for African markets.</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Operations">
+                    <h5>Eric N.</h5>
+                    <p class="role">Head of Operations</p>
+                    <p>Expert in Rwandan tourism logistics and property management.</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Marketing">
+                    <h5>Claudine U.</h5>
+                    <p class="role">Marketing Director</p>
+                    <p>Digital marketing specialist focused on promoting Rwanda tourism.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-banner">
+        <div class="container">
+            <div class="stats-grid">
+                <div>
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Properties Listed</div>
+                </div>
+                <div>
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Happy Guests</div>
+                </div>
+                <div>
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label">Districts Covered</div>
+                </div>
+                <div>
+                    <div class="stat-number">4.8★</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Join Our Journey</h2>
+            <p>Whether you're a property owner looking to reach more guests, or a traveler seeking authentic Rwandan
+                experiences, we'd love to connect with you.</p>
+            <div class="cta-buttons">
+                <a href="host.html" class="btn btn-primary" style="font-size:16px; padding: 12px 28px;">🏡 List Your
+                    Property</a>
+                <a href="contact.html" class="btn-outline-primary">✉️ Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shared Footer -->
+    <div id="app-footer"></div>
+
+    <script src="js/components.js"></script>
+
+</body>
+
+</html>

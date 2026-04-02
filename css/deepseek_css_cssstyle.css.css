@@ -1,0 +1,191 @@
+/* RwandaStays Custom Styles */
+:root {
+    --rwanda-green: #008753;
+    --rwanda-blue: #00A3E0;
+    --rwanda-yellow: #FAD201;
+    --rwanda-light: #F8F9FA;
+    --rwanda-dark: #343A40;
+}
+
+/* General Styles */
+body {
+    font-family: 'Open Sans', sans-serif;
+    padding-top: 76px; /* For fixed navbar */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 135, 83, 0.85), rgba(0, 163, 224, 0.85)),
+                url('https://images.unsplash.com/photo-1590077428593-a55bb07c4665?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-box {
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Destination Cards */
+.destination-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.destination-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.destination-img {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border-radius: 8px 8px 0 0;
+}
+
+.destination-overlay {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+/* Property Cards */
+.property-card {
+    border: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.property-img {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.price-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--rwanda-green);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Step Icons */
+.step-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--rwanda-green);
+    border-color: var(--rwanda-green);
+    padding: 10px 25px;
+}
+
+.btn-primary:hover {
+    background-color: #006b42;
+    border-color: #006b42;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background-color: var(--rwanda-green);
+    border-color: var(--rwanda-green);
+}
+
+.btn-outline-primary {
+    border-color: var(--rwanda-blue);
+    color: var(--rwanda-blue);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--rwanda-blue);
+    border-color: var(--rwanda-blue);
+}
+
+/* Amenities Badges */
+.amenity-badge {
+    display: inline-block;
+    background: var(--rwanda-light);
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+/* Mobile Money Section */
+.mobile-money-icon {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 70vh;
+        text-align: center;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .search-box .row > div {
+        margin-bottom: 15px;
+    }
+    
+    .destination-card, .property-card {
+        margin-bottom: 20px;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Rating Stars */
+.rating-stars {
+    color: var(--rwanda-yellow);
+}
+
+/* Badges */
+.badge-success {
+    background-color: var(--rwanda-green) !important;
+}

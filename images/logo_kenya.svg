@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <rect width="200" height="100" fill="#AA0000"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="40" fill="white" font-weight="bold">KQ</text>
+  <text x="50%" y="80%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="20" fill="white">Kenya Airways</text>
+</svg>

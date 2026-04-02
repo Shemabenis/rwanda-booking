@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RwandaBooking - Attractions</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .attraction-card {
+            background: white;
+            border: 1px solid var(--ui-border);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .attraction-card {
+                flex-direction: row;
+            }
+        }
+
+        .attr-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        @media (min-width: 768px) {
+            .attr-image {
+                width: 250px;
+                height: auto;
+            }
+        }
+
+        .attr-details {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .attr-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .attr-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .attr-meta {
+            display: flex;
+            gap: 16px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .price-section {
+            text-align: right;
+            margin-top: auto;
+        }
+
+        /* ===== Availability / Price Summary Modal ===== */
+        #availability-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.2s ease;
+        }
+        #availability-modal-overlay.open {
+            display: flex;
+        }
+        #availability-modal {
+            background: #fff;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+            overflow: hidden;
+            animation: slideUp 0.25s cubic-bezier(0.4,0,0.2,1);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .modal-header {
+            background: var(--brand-primary);
+            color: #fff;
+            padding: 20px 24px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+        .modal-header p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin: 4px 0 0;
+        }
+        .modal-close-btn {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+        .modal-close-btn:hover { background: rgba(255,255,255,0.3); }
+        .modal-body {
+            padding: 24px;
+        }
+        .modal-attr-thumb {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .price-breakdown {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .price-breakdown-title {
+            background: #f5f7fa;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        .price-row.total {
+            background: #f0fdf4;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--brand-primary);
+        }
+        .price-row span:last-child { font-weight: 600; }
+        .modal-availability-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #d1fae5;
+            color: #065f46;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .guests-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .guests-control label {
+            font-size: 14px;
+            font-weight: 600;
+            flex: 1;
+        }
+        .guests-control input[type=number] {
+            width: 70px;
+            padding: 8px 10px;
+            border: 1px solid var(--ui-border);
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .btn-book-now {
+            width: 100%;
+            padding: 14px;
+            background: var(--brand-secondary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-book-now:hover { background: var(--brand-primary); }
+        .btn-book-now:active { transform: translateY(1px); }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div id="app-header"></div>
+
+    <div class="container" style="margin-top: 24px;">
+        <!-- Search Header -->
+        <h1 style="margin-bottom: 24px;">Attractions & Experiences</h1>
+        <div class="search-box" style="margin-bottom: 32px;">
+            <form class="search-form" onsubmit="handleAttractionSearch(event)">
+                <div class="input-group">
+                    <span style="margin-right:8px;">📍</span>
+                    <input type="text" id="attr-location" class="input-field" placeholder="Where do you want to go?"
+                        value="Rwanda">
+                </div>
+                <!-- Optional Date -->
+                <div class="input-group">
+                    <span style="margin-right:8px;">📅</span>
+                    <input type="date" id="attr-date" class="input-field" placeholder="When?">
+                </div>
+                <div class="search-btn-wrapper">
+                    <button type="submit" class="search-btn">Find Experiences</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="results-list">
+            <h2 id="results-count" style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Top Attractions</h2>
+            <div id="attr-container"></div>
+        </div>
+    </div>
+
+    <!-- Availability / Price Summary Modal -->
+    <div id="availability-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div id="availability-modal">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modal-title">Price Summary</h2>
+                    <p id="modal-subtitle">Review your booking details below</p>
+                </div>
+                <button class="modal-close-btn" onclick="closeAvailabilityModal()" aria-label="Close">&#x2715;</button>
+            </div>
+            <div class="modal-body">
+                <img id="modal-thumb" src="" alt="" class="modal-attr-thumb">
+                <div class="modal-availability-badge">
+                    <span>✅</span> Available on your selected date
+                </div>
+
+                <!-- Guest selector -->
+                <div class="guests-control">
+                    <label for="modal-guests">Number of guests</label>
+                    <input type="number" id="modal-guests" min="1" max="20" value="1" onchange="updateModalPrice()">
+                </div>
+
+                <!-- Price breakdown -->
+                <div class="price-breakdown">
+                    <div class="price-breakdown-title">Price Breakdown</div>
+                    <div class="price-row">
+                        <span>📍 Location</span>
+                        <span id="modal-location">—</span>
+                    </div>
+                    <div class="price-row">
+                        <span>📅 Date</span>
+                        <span id="modal-date">—</span>
+                    </div>
+                    <div class="price-row">
+                        <span>⏳ Duration</span>
+                        <span id="modal-duration">—</span>
+                    </div>
+                    <div class="price-row">
+                        <span>💵 Price per person</span>
+                        <span id="modal-price-per">—</span>
+                    </div>
+                    <div class="price-row">
+                        <span>👥 Guests</span>
+                        <span id="modal-guests-display">1</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total</span>
+                        <span id="modal-total">—</span>
+                    </div>
+                </div>
+
+                <button class="btn-book-now" id="btn-book-now" onclick="confirmAttractionBooking()">
+                    🎟️ Book Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="app-footer"></div>
+
+    <script src="js/attractions-data.js?v=6"></script>
+    <script src="js/components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set min date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('attr-date').min = today;
+
+            // Load initial attractions asynchronously
+            if (typeof fetchAttractions !== 'undefined') {
+                fetchAttractions().then(data => {
+                    if (typeof _loadedAttractionsCache !== 'undefined') _loadedAttractionsCache = data;
+                    renderAttractions(data);
+                });
+            } else if (typeof attractions !== 'undefined') {
+                renderAttractions(attractions);
+            }
+        });
+
+        function handleAttractionSearch(e) {
+            e.preventDefault();
+            const location = document.getElementById('attr-location').value;
+            filterAttractions(location);
+        }
+
+        function filterAttractions(searchTerm) {
+            let dataToFilter = typeof _loadedAttractionsCache !== 'undefined' && _loadedAttractionsCache.length > 0 ? _loadedAttractionsCache : (typeof attractions !== 'undefined' ? attractions : []);
+            
+            if (!searchTerm) {
+                renderAttractions(dataToFilter);
+                return;
+            }
+            const lowerTerm = searchTerm.toLowerCase();
+            const filtered = dataToFilter.filter(a =>
+                a.location.toLowerCase().includes(lowerTerm) ||
+                a.name.toLowerCase().includes(lowerTerm)
+            );
+            renderAttractions(filtered, searchTerm);
+        }
+
+        // Holds current attraction state for modal
+        let _modalAttrData = null;
+
+        window.triggerAttractionBooking = function(id, name, price, location, duration, image) {
+            const attrDate = document.getElementById('attr-date').value;
+
+            if (!attrDate) {
+                alert('Please select a date first before checking availability.');
+                return;
+            }
+
+            // Store data for when user confirms
+            _modalAttrData = { id, name, price, location, duration, image, date: attrDate };
+
+            // Format date for display
+            const dateObj = new Date(attrDate + 'T00:00:00');
+            const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+
+            // Populate modal
+            document.getElementById('modal-title').textContent = name;
+            document.getElementById('modal-subtitle').textContent = 'Review your booking details below';
+            document.getElementById('modal-thumb').src = image || '';
+            document.getElementById('modal-location').textContent = location || 'Rwanda';
+            document.getElementById('modal-date').textContent = formattedDate;
+            document.getElementById('modal-duration').textContent = duration || 'N/A';
+            document.getElementById('modal-guests').value = 1;
+            updateModalPrice();
+
+            // Open modal
+            document.getElementById('availability-modal-overlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        };
+
+        function updateModalPrice() {
+            if (!_modalAttrData) return;
+            const guests = parseInt(document.getElementById('modal-guests').value) || 1;
+            const total = _modalAttrData.price * guests;
+            document.getElementById('modal-price-per').textContent = formatAttractionPrice(_modalAttrData.price);
+            document.getElementById('modal-guests-display').textContent = guests;
+            document.getElementById('modal-total').textContent = formatAttractionPrice(total);
+        }
+
+        window.closeAvailabilityModal = function() {
+            document.getElementById('availability-modal-overlay').classList.remove('open');
+            document.body.style.overflow = '';
+            _modalAttrData = null;
+        };
+
+        // Close when clicking the dark backdrop
+        document.getElementById('availability-modal-overlay').addEventListener('click', function(e) {
+            if (e.target === this) closeAvailabilityModal();
+        });
+
+        window.confirmAttractionBooking = async function() {
+            if (!_modalAttrData) return;
+            const guests = parseInt(document.getElementById('modal-guests').value) || 1;
+            const total = _modalAttrData.price * guests;
+
+            const btn = document.getElementById('btn-book-now');
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+
+            if (window.submitBooking) {
+                await window.submitBooking({
+                    type: 'attraction',
+                    itemId: _modalAttrData.id,
+                    itemName: _modalAttrData.name + ' Tickets',
+                    price: total,
+                    checkIn: _modalAttrData.date,
+                    checkOut: _modalAttrData.date,
+                    guests: guests
+                });
+            } else {
+                alert('Booking system is not loaded yet. Please try again in a moment.');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '🎟️ Book Now';
+            closeAvailabilityModal();
+        };
+
+        function renderAttractions(data, searchTerm = '') {
+            const container = document.getElementById('attr-container');
+            const countLabel = document.getElementById('results-count');
+
+            container.innerHTML = '';
+
+            if (data.length === 0) {
+                countLabel.textContent = `No experiences found for "${searchTerm}"`;
+                container.innerHTML = '<div style="padding: 20px; text-align: center;"><h3>No matches found. Try "Kigali" or "Park".</h3></div>';
+                return;
+            }
+
+            countLabel.textContent = searchTerm ? `${data.length} experiences found for "${searchTerm}"` : `Top Attractions`;
+
+            data.forEach(a => {
+                const html = `
+                <div class="attraction-card">
+                    <img src="${a.image}" alt="${a.name}" class="attr-image">
+                    <div class="attr-details">
+                        <div>
+                            <div class="attr-header">
+                                <h3 class="attr-title">${a.name}</h3>
+                                <div class="rating-badge">${a.rating}</div>
+                            </div>
+                            <div class="attr-meta">
+                                <span>📍 ${a.location}</span>
+                                <span>⏳ ${a.duration}</span>
+                            </div>
+                            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">${a.description}</p>
+                        </div>
+                        <div class="price-section">
+                            <div style="font-size: 12px; color: var(--text-secondary);">Starting from</div>
+                            <div class="price-text" style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">${formatAttractionPrice(a.price)}</div>
+                            <button class="btn btn-primary" onclick="window.triggerAttractionBooking('${a.id}', '${a.name}', ${a.price}, '${a.location}', '${a.duration}', '${a.image}')">Check Availability</button>
+                        </div>
+                    </div>
+                </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        }
+    </script>
+</body>
+
+</html>

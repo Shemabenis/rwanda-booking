@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#004d2e"/>
+  
+  <!-- Car icon -->
+  <g fill="#febb02">
+    <path d="M60 90 L70 75 L130 75 L140 90 Z"/>
+    <rect x="55" y="90" width="90" height="25" rx="3"/>
+    <circle cx="70" cy="120" r="8" fill="#ffffff"/>
+    <circle cx="130" cy="120" r="8" fill="#ffffff"/>
+    <rect x="75" y="80" width="15" height="10" fill="#ffffff" opacity="0.7"/>
+    <rect x="95" y="80" width="15" height="10" fill="#ffffff" opacity="0.7"/>
+    <rect x="115" y="80" width="15" height="10" fill="#ffffff" opacity="0.7"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#febb02">KCR</text>
+  <text x="100" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">KIGALI CAR RENTALS</text>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#0071c2" rx="10"/>
+  
+  <!-- Price tag shape -->
+  <g fill="#ff8c00">
+    <path d="M50 60 L100 60 L120 80 L100 100 L50 100 Q45 100 45 95 L45 65 Q45 60 50 60 Z"/>
+    <circle cx="60" cy="75" r="5" fill="#ffffff"/>
+  </g>
+  
+  <!-- Car icon -->
+  <g fill="#ffffff">
+    <path d="M75 105 L85 92 L130 92 L140 105 Z"/>
+    <rect x="70" y="105" width="75" height="22" rx="3"/>
+    <circle cx="85" cy="132" r="8" fill="#ff8c00"/>
+    <circle cx="85" cy="132" r="5" fill="#1a1a1a"/>
+    <circle cx="130" cy="132" r="8" fill="#ff8c00"/>
+    <circle cx="130" cy="132" r="5" fill="#1a1a1a"/>
+    <rect x="90" y="97" width="12" height="8" fill="#0071c2" opacity="0.7"/>
+    <rect x="105" y="97" width="12" height="8" fill="#0071c2" opacity="0.7"/>
+    <rect x="120" y="97" width="12" height="8" fill="#0071c2" opacity="0.7"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ff8c00">BUDGET</text>
+  <text x="100" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#ffffff">CARS</text>
+</svg>
