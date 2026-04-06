@@ -51,6 +51,11 @@ body {
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 a {
@@ -72,6 +77,31 @@ img {
   max-width: var(--container-width);
   margin: 0 auto;
   padding: 0 16px;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+  }
+}
+
+/* Visibility Utilities */
+.hidden-mobile {
+  display: flex; /* Default for flex layouts */
+}
+
+.visible-mobile {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+
+  .visible-mobile {
+    display: block !important;
+  }
 }
 
 .btn {
@@ -141,6 +171,42 @@ header {
   align-items: center;
 }
 
+/* Mobile Menu Toggle Button */
+.mobile-menu-btn {
+  display: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: -8px;
+}
+
+@media (max-width: 1023px) {
+  .mobile-menu-btn {
+    display: block;
+    order: 3;
+  }
+  .mobile-actions {
+    display: flex !important;
+    gap: 16px;
+    align-items: center;
+    order: 2;
+    margin-left: auto;
+    margin-right: 8px;
+  }
+}
+
+.nav-action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.nav-action-icon:hover {
+  opacity: 1;
+}
+
 .logo {
   font-size: 24px;
   font-weight: 700;
@@ -153,6 +219,12 @@ header {
   display: flex;
   gap: 24px;
   align-items: center;
+}
+
+@media (max-width: 1023px) {
+  .nav-links {
+    display: none;
+  }
 }
 
 .nav-item {
@@ -210,6 +282,33 @@ header {
   padding-bottom: 2px;
 }
 
+/* Secondary Nav Scroll Handling */
+.secondary-nav-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-scroll-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 5;
+  opacity: 0;
+}
+
+.nav-scroll-shadow.left {
+  left: 0;
+  background: linear-gradient(to right, var(--brand-primary), transparent);
+}
+
+.nav-scroll-shadow.right {
+  right: 0;
+  background: linear-gradient(to left, var(--brand-primary), transparent);
+}
+
 /* Hero Section */
 .hero {
   background-color: var(--brand-primary);
@@ -239,6 +338,19 @@ header {
   margin-bottom: 32px;
 }
 
+@media (max-width: 1023px) {
+  .hero h1 {
+    font-size: 32px;
+  }
+  .hero p {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+  .hero-content {
+    padding: 32px 0 60px;
+  }
+}
+
 /* Search Box - The Core UI Element */
 .search-container {
   margin-top: -30px;
@@ -253,11 +365,23 @@ header {
   padding: 4px;
   border-radius: var(--radius-md);
   /* Slightly more square */
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   display: flex;
   gap: 4px;
   border: 3px solid #0071c2;
   /* Make blue border thicker */
+}
+
+@media (max-width: 1023px) {
+  .search-container {
+    margin-top: -40px;
+    padding: 0 8px;
+  }
+  .search-box {
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    flex-direction: column; /* Stack blue box items if needed, but search-form handles it */
+  }
 }
 
 .search-form {
@@ -323,6 +447,16 @@ header {
   font-weight: 400;
 }
 
+@media (max-width: 1023px) {
+  .input-group {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+  }
+  .input-group:last-child {
+    border-bottom: none;
+  }
+}
+
 .search-btn-wrapper {
   padding: 4px;
   background: var(--brand-white);
@@ -377,9 +511,9 @@ header {
   gap: 24px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 767px) {
   .offers-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -389,23 +523,41 @@ header {
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  background: white;
 }
 
 .offer-content {
-  padding: 16px;
+  padding: 20px;
   flex: 1;
 }
 
 .offer-image {
-  width: 140px;
+  width: 160px;
   object-fit: cover;
+}
+
+@media (max-width: 480px) {
+  .offer-card {
+    flex-direction: column-reverse;
+  }
+  .offer-image {
+    width: 100%;
+    height: 140px;
+  }
 }
 
 /* Cards Grid (Destinations) */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 16px;
+}
+
+@media (max-width: 767px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 }
 
 .card {
@@ -729,6 +881,13 @@ footer {
   }
 }
 
+@media (max-width: 1023px) {
+  .filters-sidebar {
+    display: none;
+    /* In a real app, this would be a slide-out or collapsed filter */
+  }
+}
+
 /* Filters Sidebar */
 .filters-sidebar {
   background: white;
@@ -794,6 +953,23 @@ footer {
   height: 100px;
   flex-shrink: 0;
   object-fit: cover;
+}
+
+@media (max-width: 480px) {
+  .property-card-horizontal {
+    flex-direction: column;
+  }
+  .h-card-image {
+    width: 100%;
+    height: 180px;
+  }
+  .price-block {
+    text-align: left;
+    align-items: flex-start;
+    margin-top: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -956,6 +1132,17 @@ footer {
   margin-bottom: 32px;
 }
 
+@media (max-width: 767px) {
+  .gallery-grid {
+    border-radius: 0;
+    margin: 0 -16px 24px;
+    height: auto;
+  }
+  .gallery-main {
+    height: 250px;
+  }
+}
+
 @media (min-width: 768px) {
   .gallery-grid {
     grid-template-columns: 2fr 1fr;
@@ -999,7 +1186,18 @@ footer {
 .property-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
+  gap: 40px;
+}
+
+@media (max-width: 1023px) {
+  .property-layout {
+    display: flex;
+    flex-direction: column;
+  }
+  .booking-widget-container {
+    order: -1; /* Small screens might want price/book button near top or keep it logical */
+    /* Let's actually keep it at bottom for mobile or show a sticky footer */
+  }
 }
 
 @media (min-width: 1024px) {

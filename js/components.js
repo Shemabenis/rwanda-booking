@@ -60,6 +60,16 @@ function injectHeader() {
         <div class="container navbar">
             <a href="index.html" class="logo">RwandaBooking</a>
 
+            <!-- Mobile-specific icons (Sign in / List) -->
+            <div class="mobile-actions visible-mobile">
+                <a href="host.html" class="nav-action-icon" title="List your property">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                </a>
+                <a href="login.html" class="nav-action-icon" title="Sign in">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </a>
+            </div>
+
             <!-- Desktop Nav -->
             <nav class="nav-links hidden-mobile">
                 <a href="index.html" class="nav-item" data-i18n="nav_home">Home</a>
@@ -98,9 +108,10 @@ function injectHeader() {
         </div>
 
         <!-- Secondary Navigation Bar -->
-        <div style="background-color: var(--brand-primary); padding-bottom: 0; border-top: 1px solid rgba(255,255,255,0.15);">
-            <div class="container">
-                <div class="secondary-nav">
+        <div style="background-color: var(--brand-primary); padding-bottom: 0; border-top: 1px solid rgba(255,255,255,0.15); position: relative;">
+            <div class="container" style="position: relative;">
+                <div class="secondary-nav-wrapper">
+                    <div class="secondary-nav" id="secondaryNav">
                     <a href="properties.html" class="secondary-nav-item" data-page="properties">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="#60a5fa" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-1.5c0-2.33-4.67-3.5-7-3.5zm13-8v2h-2V7h-2v2h-2v2h2v2h2v-2h2v2h2V7h-2z"/></svg>
                         <span data-i18n="nav_stays">Stays</span>
@@ -118,6 +129,8 @@ function injectHeader() {
                         <span data-i18n="nav_attractions">Attractions</span>
                     </a>
                 </div>
+                <div class="nav-scroll-shadow right" id="navShadowRight"></div>
+                <div class="nav-scroll-shadow left" id="navShadowLeft"></div>
             </div>
         </div>
     </header>
@@ -316,6 +329,25 @@ function setupMobileMenu() {
             toggleMenu(false);
         }
     });
+
+    // Secondary Nav Scroll Shadows
+    const secondaryNav = document.getElementById('secondaryNav');
+    const shadowRight = document.getElementById('navShadowRight');
+    const shadowLeft = document.getElementById('navShadowLeft');
+
+    if (secondaryNav) {
+        const updateShadows = () => {
+            const scrollLeft = secondaryNav.scrollLeft;
+            const maxScroll = secondaryNav.scrollWidth - secondaryNav.clientWidth;
+            
+            if (shadowLeft) shadowLeft.style.opacity = scrollLeft > 10 ? '1' : '0';
+            if (shadowRight) shadowRight.style.opacity = scrollLeft < maxScroll - 10 ? '1' : '0';
+        };
+
+        secondaryNav.addEventListener('scroll', updateShadows);
+        window.addEventListener('resize', updateShadows);
+        setTimeout(updateShadows, 100); // Initial check
+    }
 }
 
 function highlightActiveLink() {

@@ -18,6 +18,12 @@
             background: #fff; border-radius: 12px; width: 100%; max-width: 520px;
             box-shadow: 0 8px 40px rgba(0,0,0,0.22); overflow: hidden;
             animation: smSlideUp 0.25s cubic-bezier(0.4,0,0.2,1);
+            max-height: 90vh; display: flex; flex-direction: column;
+        }
+        @media (max-width: 480px) {
+            #stay-modal { border-radius: 16px 16px 0 0; position: fixed; bottom: 0; max-height: 85vh; }
+            .sm-header { padding: 16px 20px; }
+            .sm-body { padding: 16px 20px; }
         }
         @keyframes smSlideUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -37,7 +43,7 @@
             flex-shrink: 0; transition: background 0.15s;
         }
         .sm-close:hover { background: rgba(255,255,255,0.3); }
-        .sm-body { padding: 24px; }
+        .sm-body { padding: 24px; overflow-y: auto; flex: 1; }
         .sm-avail-badge {
             display: inline-flex; align-items: center; gap: 6px;
             background: #d1fae5; color: #065f46; border-radius: 20px;
