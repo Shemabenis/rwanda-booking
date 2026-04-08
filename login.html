@@ -31,14 +31,32 @@
                     <label class="form-label">Last Name</label>
                     <input type="text" id="auth-lastName" class="form-input" placeholder="Enter your last name">
                 </div>
+                <!-- Role selection field -->
+                <div class="form-group" id="roleGroup" style="display: none;">
+                    <label class="form-label">I am a...</label>
+                    <select id="auth-role" class="form-input">
+                        <option value="traveler">Traveler (Looking to book)</option>
+                        <option value="host">Property Owner (Looking to host)</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label class="form-label">Email address</label>
                     <input type="email" id="auth-email" class="form-input" placeholder="Enter your email" required>
                 </div>
-                <!-- Hidden password field for now, normally shown after email check or standard login -->
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="auth-password" class="form-input" placeholder="Enter your password" required minlength="6">
+                <div class="form-group" style="margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
+                        <label class="form-label" style="margin-bottom: 0;">Password</label>
+                        <a href="#" id="forgot-password-link" onclick="handleForgotPassword(event)" style="font-size: 13px; color: var(--brand-primary); text-decoration: none; font-weight: 500;">Forgot password?</a>
+                    </div>
+                    <div style="position: relative;">
+                        <input type="password" id="auth-password" class="form-input" placeholder="Enter your password" required minlength="6" style="padding-right: 40px;">
+                        <button type="button" onclick="togglePasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; padding: 0;">
+                            <svg id="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Sign In</button>
@@ -75,7 +93,6 @@
     </div>
     <!-- Footer -->
     <div id="app-footer"></div>
-    <script src="js/auth.js"></script>
     <script src="js/components.js"></script>
 </body>
 

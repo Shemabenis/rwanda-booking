@@ -94,8 +94,8 @@ function injectHeader() {
                 </a>
                 <a href="host.html" class="btn btn-secondary" data-i18n="nav_list_property">List your property</a>
                 <div class="nav-actions">
-                    <button class="btn btn-secondary" onclick="window.location.href='login.html'" data-i18n="nav_register">Register</button>
-                    <button class="btn btn-secondary" onclick="window.location.href='login.html'" data-i18n="nav_signin">Sign in</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='login.html?mode=signup'" data-i18n="nav_register">Register</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='login.html?mode=signin'" data-i18n="nav_signin">Sign in</button>
                 </div>
             </nav>
 
@@ -222,8 +222,8 @@ function injectHeader() {
 
             <!-- Auth Buttons -->
             <div class="mm-auth">
-                <a href="login.html" class="mm-btn-signin" data-i18n="nav_signin">Sign in</a>
-                <a href="login.html" class="mm-btn-register" data-i18n="nav_register">Register</a>
+                <a href="login.html?mode=signin" class="mm-btn-signin" data-i18n="nav_signin">Sign in</a>
+                <a href="login.html?mode=signup" class="mm-btn-register" data-i18n="nav_register">Register</a>
             </div>
         </div>
         `;
