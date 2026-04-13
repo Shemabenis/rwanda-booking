@@ -54,6 +54,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Dynamic Recent Properties (index.html) ---
+    const recentPropertiesGrid = document.getElementById('recent-properties-grid');
+    if (recentPropertiesGrid && typeof fetchProperties !== 'undefined') {
+        fetchProperties().then(data => {
+            if (data && data.length > 0) {
+                // sort by id descending and get top 4
+                const recent = [...data].sort((a,b) => b.id - a.id).slice(0, 4);
+                recentPropertiesGrid.innerHTML = '';
+                recent.forEach(p => {
+                    const cardHTML = `
+                        <div class="card" onclick="window.location.href='property-details.html?id=${p.id}'" style="cursor: pointer;">
+                            <img src="${p.image}" alt="${p.name}" class="card-image" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h3 class="card-title">${p.name}</h3>
+                                <p class="card-text">${p.type.charAt(0).toUpperCase() + p.type.slice(1)} in ${p.location}</p>
+                                <p style="font-weight:bold; margin-top: 8px; color: var(--brand-primary);">${formatPrice(p.price)} <span style="font-size:12px; font-weight:normal; color: var(--text-secondary);">/ night</span></p>
+                            </div>
+                        </div>
+                    `;
+                    recentPropertiesGrid.insertAdjacentHTML('beforeend', cardHTML);
+                });
+            } else {
+                recentPropertiesGrid.innerHTML = '<p style="padding: 20px;">No recently added properties yet.</p>';
+            }
+        });
+    }
 });
 
 // Render Properties Function
@@ -128,6 +155,18 @@ function renderPropertyDetails(p) {
     // Use IDs for robust selection
     const titleEl = document.getElementById('prop-title');
     if (titleEl) titleEl.textContent = p.name;
+
+    const bcTitle = document.getElementById('breadcrumb-title');
+    if (bcTitle) bcTitle.textContent = p.name;
+
+    const bcCity = document.getElementById('breadcrumb-city');
+    const cityName = p.location.split(',')[0];
+    if (bcCity) bcCity.textContent = cityName;
+
+    const subtitleEl = document.getElementById('prop-subtitle');
+    const displayType = p.type.charAt(0).toUpperCase() + p.type.slice(1);
+    const hostNameStr = p.host.name || 'Management';
+    if (subtitleEl) subtitleEl.textContent = `Entire ${displayType.toLowerCase()} hosted by ${hostNameStr}`;
 
     const ratingEl = document.querySelector('.property-meta .rating-badge');
     if (ratingEl) ratingEl.textContent = p.rating;

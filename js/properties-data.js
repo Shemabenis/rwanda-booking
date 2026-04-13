@@ -57,7 +57,7 @@ async function fetchProperties() {
         }
 
         // Map Supabase data format to the UI format expected by our app
-        return data.map(p => {
+        const mappedData = data.map(p => {
             // Find primary image or use a default one
             let primaryImg = "images/property-placeholder.png";
             if (p.property_images && p.property_images.length > 0) {
@@ -91,9 +91,14 @@ async function fetchProperties() {
                 }
             };
         });
+
+        // Merge and return
+        const localProps = JSON.parse(localStorage.getItem('rwanda_local_properties') || '[]');
+        return [...localProps, ...mappedData];
     } catch (err) {
         console.error("Exception fetching properties:", err);
-        return fallbackProperties;
+        const localProps = JSON.parse(localStorage.getItem('rwanda_local_properties') || '[]');
+        return [...localProps, ...fallbackProperties];
     }
 }
 
@@ -103,38 +108,23 @@ let _loadedPropertiesCache = [];
 // Helper to get property by ID
 async function getPropertyById(id) {
     try {
-        let retries = 0;
-        while (!window.initSupabase && retries < 40) {
-            await new Promise(r => setTimeout(r, 50));
-            retries++;
-        }
+        // 1. Check local storage mock properties first
+        const localProps = JSON.parse(localStorage.getItem('rwanda_local_properties') || '[]');
+        const localMatch = localProps.find(p => String(p.id) === String(id));
+        if (localMatch) return localMatch;
 
-        if (!window.initSupabase) return _loadedPropertiesCache.find(p => String(p.id) === String(id));
-        
-        // We can check cache first (useful if just returning from main page)
+        // 2. Check memory cache natively
         let cached = _loadedPropertiesCache.find(p => String(p.id) === String(id));
         if (cached) return cached;
 
-        const supabase = await window.initSupabase();
-        
-        // Direct query by ID
-        const { data, error } = await supabase
-            .from('properties')
-            .select(`
-                *,
-                profiles:host_id (id, first_name, last_name, email),
-                property_images (image_url, is_primary)
-            `)
-            .eq('id', id)
-            .single();
+        // 3. Instead of recreating mapping logic, let's fetch all (which applies mapping) and find it. 
+        // This flawlessly leverages the existing robust fetch logic that ties to Supabase / Local.
+        const allProps = await fetchProperties();
+        return allProps.find(p => String(p.id) === String(id)) || null;
 
-        if (error || !data) return null;
-
-        // Found it directly
-        return (await fetchProperties()).find(p => String(p.id) === String(id));
     } catch (e) {
-        console.error(e);
-        return _loadedPropertiesCache.find(p => String(p.id) === String(id));
+        console.error("Error retrieving property by ID:", e);
+        return null;
     }
 }
 
